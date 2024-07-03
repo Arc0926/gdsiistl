@@ -1,3 +1,10 @@
+This version of gdsiistl includes the SkyWater SKY130 PDK layer heights for the common layers as well as a script for applying preset materials to each of the layers in blender. 
+
+To apply the materials, open up a blender file and go to File->Append then select the materials.blend file in the example folder. Select all the materials and press append. Then open up a scripting window in blender and run the apply_materials.py script.
+
+
+Original gdsiistl README file:
+
 This version of gdsiistl is adapted to work with the GDS files generated for the SkyWater SKY130 PDK
 
 Basically the `datatype` was added to be able to identify the different layers.
