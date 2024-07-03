@@ -22,6 +22,7 @@ import gdspy # open gds file
 from stl import mesh # write stl file (python package name is "numpy-stl")
 import numpy as np # fast math on lots of points
 import triangle # triangulate polygons
+import os
 
 # get the input file name
 if len(sys.argv) < 2: # sys.argv[0] is the name of the program
@@ -35,24 +36,23 @@ gdsii_file_path = sys.argv[1]
 layerstack = {
     # (layernumber, datatype) : (zmin, zmax, 'layername'),
     
-    (235,4): (0, 0.1, 'substrate'),
-
-    (64,20): (0, 0.1, 'nwell'),    
-    (65,44): (0, 0.1, 'tap'),    
-    (65,20): (0, 0.1, 'diff'),    
-    (66,20): (0, 0.1, 'poly'),    
-    (66,44): (0, 0.1, 'licon'),    
-    (67,20): (0, 0.1, 'li1'),    
-    (67,44): (0, 0.1, 'mcon'),    
-    (68,20): (0, 0.1, 'met1'),    
-    (68,44): (0, 0.1, 'via'),    
-    (69,20): (0, 0.1, 'met2'),    
-    (69,44): (0, 0.1, 'via2'),    
-    (70,20): (0, 0.1, 'met3'),    
-    (70,44): (0, 0.1, 'via3'),    
-    (71,20): (0, 0.1, 'met4'),    
-    (71,44): (0, 0.1, 'via4'),    
-    (72,20): (0, 0.1, 'met5'),
+    (235,4): (-1.0, 0, 'substrate'),
+    (64,20): (0, 0.2062, 'nwell'),    
+    (65,20): (0.2062, 0.3262, 'diff'),    
+    (65,44): (0.2062, 0.3262, 'tap'),    
+    (66,20): (0.3262, 0.5062, 'poly'),    
+    (66,44): (0, 0.9361, 'licon'),    
+    (67,20): (0.9361, 1.0361, 'li1'),    
+    (67,44): (1.0361, 1.3761, 'mcon'),    
+    (68,20): (1.3761, 1.7361, 'met1'),    
+    (68,44): (1.7361, 2.0061, 'via'),    
+    (69,20): (2.0061, 2.3661, 'met2'),    
+    (69,44): (2.3661, 2.7861, 'via2'),    
+    (70,20): (2.7861, 3.6311, 'met3'),    
+    (70,44): (3.6311, 4.0211, 'via3'),    
+    (71,20): (4.0211, 4.8661, 'met4'),    
+    (71,44): (4.8661, 5.3711, 'via4'),    
+    (72,20): (5.3711, 6.6311, 'met5'),
     # (83,44): (0, 0.1, 'text'),
 
 
@@ -310,7 +310,8 @@ for layer in layers:
         layer_pointer += len(faces)
 
     # save layer to STL file
-    filename = gdsii_file_path + '_{}.stl'.format(layername)
+    os.makedirs(gdsii_file_path[:-4] + '_stls', exist_ok=True)
+    filename = gdsii_file_path[:-4] + '_stls' + '\\' + '{}.stl'.format(layername)
     print('    ({}, {}) to {}'.format(layer, layername, filename))
     layer_mesh_object = mesh.Mesh(layer_mesh_data, remove_empty_areas=False)
     layer_mesh_object.save(filename)
